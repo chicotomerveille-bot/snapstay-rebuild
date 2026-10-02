@@ -1,0 +1,71 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  name          String?
+  emailVerified DateTime?
+  image         String?
+  // Relation to listings (host)
+  listings      Listing[] @relation("hostListings")
+  // Relation to reviews (author)
+  reviews       Review[]  @relation("authorReviews")
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Listing {
+  id            String         @id @default(uuid())
+  title         String
+  description   String?
+  city          String
+  address       String?
+  latitude      Float
+  longitude     Float
+  price         Int // price per night in cents
+  propertyType  String // e.g., apartment, house, villa
+  rooms         Int
+  bathrooms     Int
+  guests        Int
+  // Average rating from reviews
+  averageRating Float          @default(0)
+  // Relations
+  hostId        String
+  host          User           @relation("hostListings", fields: [hostId], references: [id])
+  reviews       Review[]       @relation("listingReviews")
+  images        ListingImage[] @relation("listingImages")
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+}
+
+model Review {
+  id        String   @id @default(uuid())
+  rating    Int // 1-5
+  comment   String?
+  // Relations
+  authorId  String
+  author    User     @relation("authorReviews", fields: [authorId], references: [id])
+  listingId String
+  listing   Listing  @relation("listingReviews", fields: [listingId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([authorId, listingId]) // One review per user per listing
+}
+
+model ListingImage {
+  id        String   @id @default(uuid())
+  url       String
+  listing   Listing  @relation("listingImages", fields: [listingId], references: [id], onDelete: Cascade)
+  listingId String
+  createdAt DateTime @default(now())
+
+  @@index([listingId])
+}
