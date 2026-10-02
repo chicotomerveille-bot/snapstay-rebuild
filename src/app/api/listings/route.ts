@@ -61,7 +61,25 @@ export async function GET(request: Request) {
     });
 
     // Transform to include average rating and image URLs
-    const transformedListings = listings.map((listing) => ({
+    const transformedListings = listings.map((listing: {
+      id: string;
+      title: string;
+      description: string | null;
+      city: string;
+      address: string | null;
+      latitude: number;
+      longitude: number;
+      price: number;
+      propertyType: string;
+      rooms: number;
+      bathrooms: number;
+      guests: number;
+      hostId: string;
+      averageRating: number;
+      images: { url: string }[];
+      reviews: { rating: number }[];
+      createdAt: Date;
+    }) => ({
       ...listing,
       averageRating: listing.averageRating,
       reviewCount: listing.reviews.length,
