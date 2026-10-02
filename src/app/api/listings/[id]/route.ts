@@ -47,8 +47,8 @@ export async function GET(
       ...listing,
       averageRating: listing.averageRating,
       reviewCount: listing.reviews.length,
-      images: listing.images.map((img) => img.url),
-      reviews: listing.reviews.map((review) => ({
+      images: listing.images.map((img: { url: string }) => img.url),
+      reviews: listing.reviews.map((review: { rating: number; comment: string | null; createdAt: Date; author: { id: string; name: string | null; image: string | null } }) => ({
         ...review,
         author: review.author,
       })),
@@ -111,7 +111,7 @@ export async function PUT(
       },
     });
 
-    return NextResponse.json({ ...updatedListing, images: updatedListing.images.map((img) => img.url) });
+    return NextResponse.json({ ...updatedListing, images: updatedListing.images.map((img: { url: string }) => img.url) });
   } catch (error) {
     console.error('Failed to update listing:', error);
     return NextResponse.json({ error: 'Failed to update listing' }, { status: 500 });

@@ -8,7 +8,19 @@ import { useRouter, useParams } from 'next/navigation';
 export default function EditListingPage() {
   const { id } = useParams();
   const router = useRouter();
-  const [listing, setListing] = useState(null);
+  const [listing, setListing] = useState<{
+    id: string;
+    title: string;
+    description: string | null;
+    city: string;
+    address: string | null;
+    price: number;
+    propertyType: string;
+    rooms: number;
+    bathrooms: number;
+    guests: number;
+    images: string[];
+  } | null>(null);
   const [loading, setLoading] = useState(true);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');

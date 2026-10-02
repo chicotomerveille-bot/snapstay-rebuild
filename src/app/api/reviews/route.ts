@@ -75,7 +75,7 @@ export async function POST(request: Request) {
       select: { rating: true },
     });
     const averageRating =
-      reviews.reduce((sum, rev) => sum + rev.rating, 0) / reviews.length;
+      reviews.reduce((sum: number, rev: { rating: number }) => sum + rev.rating, 0) / reviews.length;
 
     await prisma.listing.update({
       where: { id: listingId },

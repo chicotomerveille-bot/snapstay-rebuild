@@ -65,7 +65,7 @@ export async function GET(request: Request) {
       ...listing,
       averageRating: listing.averageRating,
       reviewCount: listing.reviews.length,
-      images: listing.images.map((img) => img.url),
+      images: listing.images.map((img: { url: string }) => img.url),
     }));
 
     return NextResponse.json(transformedListings);
@@ -111,7 +111,7 @@ export async function POST(request: Request) {
       },
     });
 
-    return NextResponse.json({ ...listing, images: listing.images.map((img) => img.url) }, { status: 201 });
+    return NextResponse.json({ ...listing, images: listing.images.map((img: { url: string }) => img.url) }, { status: 201 });
   } catch (error) {
     console.error('Failed to create listing:', error);
     return NextResponse.json({ error: 'Failed to create listing' }, { status: 500 });

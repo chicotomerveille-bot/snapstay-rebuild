@@ -47,7 +47,7 @@ export async function GET(
       take: 6,
     });
 
-    const processedListings = similarListings.map((listing) => ({
+    const processedListings = similarListings.map((listing: { id: string; title: string; price: number; images: { url: string }[]; averageRating: number }) => ({
       id: listing.id,
       title: listing.title,
       price: listing.price,

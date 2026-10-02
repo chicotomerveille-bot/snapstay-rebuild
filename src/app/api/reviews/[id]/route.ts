@@ -30,7 +30,7 @@ export async function DELETE(
     });
     const averageRating =
       reviews.length > 0
-        ? reviews.reduce((sum, rev) => sum + rev.rating, 0) / reviews.length
+        ? reviews.reduce((sum: number, rev: { rating: number }) => sum + rev.rating, 0) / reviews.length
         : 0;
 
     await prisma.listing.update({

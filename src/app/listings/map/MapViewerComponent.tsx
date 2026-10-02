@@ -16,7 +16,7 @@ interface ListingProps {
   }[];
 }
 
-export const MapViewerComponent = ({ listings }: ListingProps) => {
+export default function MapViewerComponent({ listings }: ListingProps) {
   const [center, setCenter] = useState<[number, number]>([48.8566, 2.3522]);
 
   useEffect(() => {
